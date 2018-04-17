@@ -44,7 +44,24 @@ class LinkedList {
    }
 
    func removeFirst(data: Int) {
-
+      if head == nil {return}
+      var previous: LinkedListNode?
+      var current: LinkedListNode?
+      var next: LinkedListNode?
+      current = head
+      next = current?.next
+      while current?.data != data {
+         if current?.next == nil {
+            return
+         }
+         previous = current
+         current = next
+         next = current?.next
+      }
+      // Hook up previous node to next node
+      previous?.next = next
+      // Remove references in node to be removed
+      current?.next = nil
    }
 
    func contains(data: Int) -> Bool {
@@ -153,11 +170,20 @@ class LinkedList {
 }
 
 let myLinkedList = LinkedList(array: [7,13,20,1,5,10])
-myLinkedList.print()
+//myLinkedList.print()
 myLinkedList.count()
 myLinkedList.indexOf(data: 7)
-myLinkedList.elementAt(index: 2)
+//myLinkedList.elementAt(index: 2)
 myLinkedList.contains(data: 21)
+let someLinkedList = LinkedList(array: [1,2,3,4,5])
+//someLinkedList.print()
+someLinkedList.removeFirst(data: 4)
+//someLinkedList.print()
+someLinkedList.removeFirst(data: 2)
+//someLinkedList.print()
+someLinkedList.removeFirst(data: 5)
+someLinkedList.print()
+someLinkedList.count()
 
 
 
