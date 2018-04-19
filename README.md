@@ -1,2 +1,3 @@
-# LinkedList_1.0
-Basic LinkedList Practice in Swift
+# LinkedList Swift
+
+Basic implementation of a singly linked list in Swift.
