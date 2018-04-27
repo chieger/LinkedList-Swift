@@ -203,6 +203,8 @@ myLinkedList.isCycle()
 // Test with single nodes
 let singleNodeList = LinkedList(array: [0])
 singleNodeList.isCycle()
+singleNodeList.createCycleTailToHead()
+singleNodeList.isCycle()
 
 // Confirm reference vs equality
 let node1 = LinkedListNode()
