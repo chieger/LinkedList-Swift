@@ -150,6 +150,40 @@ class LinkedList {
          next = current?.next
       }
    }
+
+   func isCycle() -> Bool {
+
+      if head == nil {
+         return false
+      }
+
+      var fast: LinkedListNode?
+      var slow: LinkedListNode?
+
+      slow = head
+      fast = head
+
+      // If either become nil, no loop
+      while slow?.next != nil && fast?.next?.next != nil {
+         // Advance slow by 1 node
+         slow = slow?.next
+         // Advance fast by 2 nodes
+         fast = fast?.next?.next
+
+         if slow === fast {
+            return true
+         }
+      }
+      return false
+   }
+
+   func createCycleTailToHead() {
+      tail?.next = head
+   }
+
+   func breakCycle() {
+      tail?.next = nil
+   }
 }
 
 let myLinkedList = LinkedList(array: [7,13,20,1,5,10])
