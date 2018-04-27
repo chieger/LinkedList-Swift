@@ -186,12 +186,17 @@ class LinkedList {
    }
 }
 
+// Test with multiple nodes
 let myLinkedList = LinkedList(array: [7,13,20,1,5,10])
-myLinkedList.print()
-myLinkedList.count()
-myLinkedList.indexOf(data: 7)
-myLinkedList.elementAt(index: 2)
-myLinkedList.contains(data: 21)
+myLinkedList.isCycle()
+myLinkedList.createCycleTailToHead()
+myLinkedList.isCycle()
+myLinkedList.breakCycle()
+myLinkedList.isCycle()
+
+// Test with single nodes
+let singleNodeList = LinkedList(array: [0])
+singleNodeList.isCycle()
 
 
 
