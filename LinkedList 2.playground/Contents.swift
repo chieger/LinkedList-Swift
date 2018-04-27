@@ -2,9 +2,15 @@ import UIKit
 
 // Singly inked list
 
-class LinkedListNode {
+class LinkedListNode: Equatable {
    var data: Int = 0
    var next: LinkedListNode?
+
+   static func == (lhs: LinkedListNode, rhs: LinkedListNode) -> Bool {
+      return
+         lhs.data == rhs.data &&
+         lhs.next == rhs.next
+   }
 }
 
 class LinkedList {
@@ -198,6 +204,15 @@ myLinkedList.isCycle()
 let singleNodeList = LinkedList(array: [0])
 singleNodeList.isCycle()
 
+// Confirm reference vs equality
+let node1 = LinkedListNode()
+node1.data = 1
+let node2 = LinkedListNode()
+node2.data = 1
+// Node 1 and Node 2 are equatable because they contain the same value and next pointer (next pointer, in this case, nil)
+node1 == node2
+// Node 1 and 2 do not share the same reference
+node1 === node2
 
 
 
