@@ -282,4 +282,30 @@ node1 == node2
 node1 === node2
 
 
+// Test Palindrome detection
+// True
+let evenPalindromeList = LinkedList(array: [1,2,3,3,2,1])
+evenPalindromeList.isPalindrome()
+let oddPalindromeList = LinkedList(array: [1,2,3,4,3,2,1])
+oddPalindromeList.isPalindrome()
+// False
+let evenNonPalindromeList = LinkedList(array: [1,2,3,4,5,6])
+evenNonPalindromeList.isPalindrome()
+let oddNonPalindromeList = LinkedList(array: [1,2,3,4,5,6,7])
+oddNonPalindromeList.isPalindrome()
+// Empty list
+let emptyList = LinkedList(array: [])
+emptyList.isPalindrome()
+// single node
+singleNodeList.isPalindrome()
+
+// Test proper linked list un-reversing after palindrome check
+let testList = LinkedList(array: [1,2,3,4])
+oddPalindromeList.print()
+//testList.print()
+oddNonPalindromeList.print()
+evenPalindromeList.print()
+evenNonPalindromeList.print()
+
+
 
