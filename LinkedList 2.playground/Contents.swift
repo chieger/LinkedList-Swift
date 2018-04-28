@@ -145,16 +145,19 @@ class LinkedList {
    }
 
    func print() {
-      var current: LinkedListNode?
-      var next: LinkedListNode?
-      current = head
-      next = current?.next
+      var text = "["
+      if head != nil {
+         var current: LinkedListNode?
+         current = head
 
-      while current != nil {
-         Swift.print(current!.data)
-         current = next
-         next = current?.next
+         while current?.next != nil {
+            text += current!.data.description + ","
+            current = current?.next
+         }
+         text += current!.data.description
       }
+      text += "]"
+      Swift.print(text)
    }
 
    func isCycle() -> Bool {
