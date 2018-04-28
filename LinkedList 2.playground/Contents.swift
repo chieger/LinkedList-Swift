@@ -193,6 +193,68 @@ class LinkedList {
    func breakCycle() {
       tail?.next = nil
    }
+
+   func isPalindrome() -> Bool {
+      var isPalindrome = true
+      if head == nil {
+         isPalindrome = false
+         return isPalindrome
+      }
+      // previous and next placeholders are used during reversing
+      var previous: LinkedListNode?
+      var next: LinkedListNode?
+      // runner is used to determine middle of linked list
+      // based on where forwardWalker is at the time it reaches the end
+      var runner: LinkedListNode?
+      // Used to move up the original linked list
+      var forwardWalker: LinkedListNode?
+
+      runner = head
+      forwardWalker = head
+
+      // While the runner is on a node, excluding the last node
+      while runner != nil && runner?.next != nil {
+         // Advance the ruuner 2 nodes
+         runner = runner?.next?.next
+         // Advance the walker 1 node
+         // while reversing the list
+         next = forwardWalker?.next
+         forwardWalker?.next = previous
+         previous = forwardWalker
+         forwardWalker = next
+      }
+
+      // At this point, the forwardWalker will be on the exact middle node if odd amount of nodes
+      // Or on the midle most node on the far side if even amount of nodes
+      // If the runner landed on the last node (!= nil) then we have odd amount of nodes
+      if runner != nil {
+         // forwardWalker in exact middle of odd, advance 1 node since nothing to compare
+         // middle node with in an odd numbered palindrome
+         forwardWalker = forwardWalker?.next
+      }
+      // Used to move up the reversed half of the list
+      var reverseWalker: LinkedListNode? = previous
+      previous = next
+
+      // Walk the forwardWalker up the last half of the list
+      // Walk the reverseWalker up the reversed half of the list
+      while forwardWalker != nil {
+         // Check for equality in the nodes panindromic counterparts
+         if reverseWalker?.data != forwardWalker?.data {
+            isPalindrome = false
+         }
+         // Advance the reverseWalker up the reversed half while reversing the reversed half back to normal
+         next = reverseWalker?.next
+         reverseWalker?.next = previous
+         previous = reverseWalker
+         reverseWalker = next
+
+         // Advance forwardWalker up last half of list
+         forwardWalker = forwardWalker?.next
+      }
+      // We walked both sides matching all the way, this is a palindrome
+      return isPalindrome
+   }
 }
 
 // Test with multiple nodes
