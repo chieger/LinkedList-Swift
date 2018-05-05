@@ -2,9 +2,15 @@ import UIKit
 
 // Singly inked list
 
-class LinkedListNode {
+class LinkedListNode: Equatable {
    var data: Int = 0
    var next: LinkedListNode?
+
+   static func == (lhs: LinkedListNode, rhs: LinkedListNode) -> Bool {
+      return
+         lhs.data == rhs.data &&
+         lhs.next == rhs.next
+   }
 }
 
 class LinkedList {
@@ -151,36 +157,51 @@ class LinkedList {
       }
    }
 
-   func reverse() -> LinkedListNode? {
-      var previous: LinkedListNode?
-      var current: LinkedListNode?
-      var next: LinkedListNode?
+   func isCycle() -> Bool {
 
-      current = head
-      tail = current
-
-      while current != nil {
-         next = current?.next
-         // reverse the next pointer
-         current?.next = previous
-         previous = current
-         current = next
+      if head == nil {
+         return false
       }
-      head = previous
-      return head
+
+      var fast: LinkedListNode?
+      var slow: LinkedListNode?
+
+      slow = head
+      fast = head
+
+      // If either become nil, no loop
+      while slow?.next != nil && fast?.next?.next != nil {
+         // Advance slow by 1 node
+         slow = slow?.next
+         // Advance fast by 2 nodes
+         fast = fast?.next?.next
+
+         if slow === fast {
+            return true
+         }
+      }
+      return false
+   }
+
+   func createCycleTailToHead() {
+      tail?.next = head
+   }
+
+   func breakCycle() {
+      tail?.next = nil
    }
 }
 
-let myLinkedList = LinkedList(array: [0,1,2,3,4])
-print("Forward")
-myLinkedList.print()
-print("Reverse")
-myLinkedList.reverse()
-myLinkedList.print()
-print("One Node List")
-let oneNodeList = LinkedList(array: [0])
-oneNodeList.reverse()
-oneNodeList.print()
+// Test with multiple nodes
+let myLinkedList = LinkedList(array: [7,13,20,1,5,10])
+myLinkedList.isCycle()
+myLinkedList.createCycleTailToHead()
+myLinkedList.isCycle()
+myLinkedList.breakCycle()
+myLinkedList.isCycle()
 
-
-
+// Test with single nodes
+let singleNodeList = LinkedList(array: [0])
+singleNodeList.isCycle()
+singleNodeList.createCycleTailToHead()
+singleNodeList.isCycle()
