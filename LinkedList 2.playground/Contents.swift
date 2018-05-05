@@ -205,16 +205,3 @@ let singleNodeList = LinkedList(array: [0])
 singleNodeList.isCycle()
 singleNodeList.createCycleTailToHead()
 singleNodeList.isCycle()
-
-// Confirm reference vs equality
-let node1 = LinkedListNode()
-node1.data = 1
-let node2 = LinkedListNode()
-node2.data = 1
-// Node 1 and Node 2 are equatable because they contain the same value and next pointer (next pointer, in this case, nil)
-node1 == node2
-// Node 1 and 2 do not share the same reference
-node1 === node2
-
-
-
