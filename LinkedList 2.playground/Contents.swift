@@ -2,9 +2,15 @@ import UIKit
 
 // Singly inked list
 
-class LinkedListNode {
+class LinkedListNode: Equatable {
    var data: Int = 0
    var next: LinkedListNode?
+
+   static func == (lhs: LinkedListNode, rhs: LinkedListNode) -> Bool {
+      return
+         lhs.data == rhs.data &&
+         lhs.next == rhs.next
+   }
 }
 
 class LinkedList {
@@ -139,16 +145,115 @@ class LinkedList {
    }
 
    func print() {
-      var current: LinkedListNode?
-      var next: LinkedListNode?
-      current = head
-      next = current?.next
+      var text = "["
+      if head != nil {
+         var current: LinkedListNode?
+         current = head
 
-      while current != nil {
-         Swift.print(current!.data)
-         current = next
-         next = current?.next
+         while current?.next != nil {
+            text += current!.data.description + ","
+            current = current?.next
+         }
+         text += current!.data.description
       }
+      text += "]"
+      Swift.print(text)
+   }
+
+   func isCycle() -> Bool {
+
+      if head == nil {
+         return false
+      }
+
+      var fast: LinkedListNode?
+      var slow: LinkedListNode?
+
+      slow = head
+      fast = head
+
+      // If either become nil, no loop
+      while slow?.next != nil && fast?.next?.next != nil {
+         // Advance slow by 1 node
+         slow = slow?.next
+         // Advance fast by 2 nodes
+         fast = fast?.next?.next
+
+         if slow === fast {
+            return true
+         }
+      }
+      return false
+   }
+
+   func createCycleTailToHead() {
+      tail?.next = head
+   }
+
+   func breakCycle() {
+      tail?.next = nil
+   }
+
+   func isPalindrome() -> Bool {
+      var isPalindrome = true
+      if head == nil {
+         isPalindrome = false
+         return isPalindrome
+      }
+      // previous and next placeholders are used during reversing
+      var previous: LinkedListNode?
+      var next: LinkedListNode?
+      // runner is used to determine middle of linked list
+      // based on where forwardWalker is at the time it reaches the end
+      var runner: LinkedListNode?
+      // Used to move up the original linked list
+      var forwardWalker: LinkedListNode?
+
+      runner = head
+      forwardWalker = head
+
+      // While the runner is on a node, excluding the last node
+      while runner != nil && runner?.next != nil {
+         // Advance the ruuner 2 nodes
+         runner = runner?.next?.next
+         // Advance the walker 1 node
+         // while reversing the list
+         next = forwardWalker?.next
+         forwardWalker?.next = previous
+         previous = forwardWalker
+         forwardWalker = next
+      }
+
+      // At this point, the forwardWalker will be on the exact middle node if odd amount of nodes
+      // Or on the midle most node on the far side if even amount of nodes
+      // If the runner landed on the last node (!= nil) then we have odd amount of nodes
+      if runner != nil {
+         // forwardWalker in exact middle of odd, advance 1 node since nothing to compare
+         // middle node with in an odd numbered palindrome
+         forwardWalker = forwardWalker?.next
+      }
+      // Used to move up the reversed half of the list
+      var reverseWalker: LinkedListNode? = previous
+      previous = next
+
+      // Walk the forwardWalker up the last half of the list
+      // Walk the reverseWalker up the reversed half of the list
+      while forwardWalker != nil {
+         // Check for equality in the nodes panindromic counterparts
+         if reverseWalker?.data != forwardWalker?.data {
+            isPalindrome = false
+         }
+         // Advance the reverseWalker up the reversed half while reversing the reversed half back to normal
+         next = reverseWalker?.next
+         reverseWalker?.next = previous
+         previous = reverseWalker
+         reverseWalker = next
+
+         // Advance forwardWalker up last half of list
+         forwardWalker = forwardWalker?.next
+      }
+      // We walked both sides matching all the way, this is a palindrome
+      return isPalindrome
    }
 
    func reverse() -> LinkedListNode? {
@@ -171,16 +276,52 @@ class LinkedList {
    }
 }
 
-let myLinkedList = LinkedList(array: [0,1,2,3,4])
-print("Forward")
-myLinkedList.print()
-print("Reverse")
-myLinkedList.reverse()
-myLinkedList.print()
-print("One Node List")
-let oneNodeList = LinkedList(array: [0])
-oneNodeList.reverse()
-oneNodeList.print()
+// Test with multiple nodes
+let myLinkedList = LinkedList(array: [7,13,20,1,5,10])
+myLinkedList.isCycle()
+myLinkedList.createCycleTailToHead()
+myLinkedList.isCycle()
+myLinkedList.breakCycle()
+myLinkedList.isCycle()
+
+// Test with single nodes
+let singleNodeList = LinkedList(array: [0])
+singleNodeList.isCycle()
+singleNodeList.createCycleTailToHead()
+singleNodeList.isCycle()
+
+// Confirm reference vs equality
+let node1 = LinkedListNode()
+node1.data = 1
+let node2 = LinkedListNode()
+node2.data = 1
+// Node 1 and Node 2 are equatable because they contain the same value and next pointer (next pointer, in this case, nil)
+node1 == node2
+// Node 1 and 2 do not share the same reference
+node1 === node2
 
 
+// Test Palindrome detection
+// True
+let evenPalindromeList = LinkedList(array: [1,2,3,3,2,1])
+evenPalindromeList.isPalindrome()
+let oddPalindromeList = LinkedList(array: [1,2,3,4,3,2,1])
+oddPalindromeList.isPalindrome()
+// False
+let evenNonPalindromeList = LinkedList(array: [1,2,3,4,5,6])
+evenNonPalindromeList.isPalindrome()
+let oddNonPalindromeList = LinkedList(array: [1,2,3,4,5,6,7])
+oddNonPalindromeList.isPalindrome()
+// Empty list
+let emptyList = LinkedList(array: [])
+emptyList.isPalindrome()
+// single node
+singleNodeList.isPalindrome()
 
+// Test proper linked list un-reversing after palindrome check
+let testList = LinkedList(array: [1,2,3,4])
+oddPalindromeList.print()
+//testList.print()
+oddNonPalindromeList.print()
+evenPalindromeList.print()
+evenNonPalindromeList.print()
