@@ -255,6 +255,25 @@ class LinkedList {
       // We walked both sides matching all the way, this is a palindrome
       return isPalindrome
    }
+
+   func reverse() -> LinkedListNode? {
+      var previous: LinkedListNode?
+      var current: LinkedListNode?
+      var next: LinkedListNode?
+
+      current = head
+      tail = current
+
+      while current != nil {
+         next = current?.next
+         // reverse the next pointer
+         current?.next = previous
+         previous = current
+         current = next
+      }
+      head = previous
+      return head
+   }
 }
 
 // Test with multiple nodes
@@ -306,6 +325,3 @@ oddPalindromeList.print()
 oddNonPalindromeList.print()
 evenPalindromeList.print()
 evenNonPalindromeList.print()
-
-
-
